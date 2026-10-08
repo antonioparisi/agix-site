@@ -170,13 +170,19 @@ h1 { margin: 0 0 22px; font-size: clamp(40px, 4.6vw, 66px); text-wrap: balance; 
 .core-s { fill: var(--mu); font: 12px var(--mono); text-anchor: middle; }
 .link { stroke: var(--bd2); stroke-width: 1.2; fill: none; }
 .link.hot { stroke: var(--c); stroke-opacity: .7; }
-.node circle.ring { fill: var(--s1); stroke: var(--c); stroke-width: 1.6; }
-.node circle.halo { fill: var(--c); opacity: 0; transition: opacity .3s; }
-.node.on circle.halo { opacity: .18; }
-.node text.ini { fill: var(--c); font: 600 15px var(--mono); text-anchor: middle; dominant-baseline: central; }
-.node text.nm { fill: var(--fg2); font: 500 13px var(--sans); text-anchor: middle; }
-.node text.rl { fill: var(--dim); font: 11px var(--mono); text-anchor: middle; }
+.node circle.ring { fill: var(--s1); stroke: var(--c); stroke-width: 1.6; transition: stroke-width .3s; }
+.node circle.halo { fill: var(--c); opacity: 0; transform-box: fill-box; transform-origin: center; }
+.node.on circle.halo { animation: work 1.4s var(--ease) infinite; }
+.node.on circle.ring { stroke-width: 2.4; }
+@keyframes work { 0% { opacity: .28; transform: scale(.75); } 100% { opacity: 0; transform: scale(1.25); } }
+.node text.ini { fill: var(--c); font: 600 14px var(--mono); text-anchor: middle; dominant-baseline: central; }
+.node .lbl .nm { fill: var(--fg); font: 600 13.5px var(--sans); }
+.node .lbl .rl { fill: var(--c); font: 11px var(--mono); }
+.node .lbl .st { fill: var(--mu); font: italic 11px var(--mono); }
+.node.on .lbl .st { fill: var(--fg2); }
+.node.done .lbl .st { fill: var(--ok); font-style: normal; }
 .packet { fill: var(--c); filter: drop-shadow(0 0 6px var(--c)); }
+.packet.trail { filter: none; }
 .feed {
   --row: 44px; --gap: 8px; --rows: 4;
   list-style: none; margin: 8px 0 0; padding: 0; position: relative; overflow: hidden;
@@ -356,4 +362,28 @@ section h2 { text-wrap: balance; margin: 0 0 14px; font-size: clamp(30px, 4.2vw,
   .more { grid-template-columns: minmax(0, 1fr); gap: 56px; }
   .more > .mini:not(.mini-phone) { display: grid; grid-template-columns: minmax(0, 1fr); }
   .more > .mini:not(.mini-phone) h4 { margin-top: 20px; }
+}
+
+/* Effects: one moment per section, everything already in place before any of it runs. */
+/* The run's flow draws itself once it is in view; the steps light up one after another. */
+.js .steps.drawn::before { animation: draw 1.4s var(--ease) both; }
+@keyframes draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@media (max-width: 900px) { @keyframes draw { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } } }
+.js .steps.drawn .step-n { animation: light .6s var(--ease) both; animation-delay: calc(var(--n, 0) * 280ms + 200ms); }
+@keyframes light { 0% { box-shadow: 0 0 0 0 transparent; } 40% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--k) 25%, transparent); background: color-mix(in srgb, var(--k) 12%, var(--bg)); } 100% { box-shadow: 0 0 0 0 transparent; } }
+/* A clip lifts a little under the pointer. */
+.feat .clip, .mini .clip { transition: transform .35s var(--ease), box-shadow .35s var(--ease); }
+@media (hover: hover) {
+  .feat .clip:hover, .mini .clip:hover { transform: translateY(-4px); box-shadow: 0 40px 90px rgba(0, 0, 0, .6), 0 0 0 1px color-mix(in srgb, var(--acc) 35%, var(--bd2)); }
+  .clip .expand { opacity: 0; transition: opacity .2s; }
+  .clip:hover .expand, .clip .expand:focus-visible { opacity: .9; }
+}
+/* A soft light follows the pointer across the bridge cards. */
+.b-card { position: relative; overflow: hidden; }
+.b-card::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--acc) 14%, transparent), transparent 70%); }
+.b-card:hover::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .js .steps.drawn::before, .js .steps.drawn .step-n { animation: none; }
+  .feat .clip:hover, .mini .clip:hover { transform: none; }
 }
