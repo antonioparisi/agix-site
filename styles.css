@@ -344,3 +344,16 @@ section h2 { text-wrap: balance; margin: 0 0 14px; font-size: clamp(30px, 4.2vw,
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Wide screens: each clip full width under its text, near the size it was recorded at (1280),
+   so the UI in it is not shrunk to half and its text stays sharp on any monitor. */
+@media (min-width: 1100px) {
+  .feat-in, .feat.flip .feat-in { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .feat.flip .feat-copy { order: 0; }
+  .feat-copy { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); column-gap: 56px; align-items: end; }
+  .feat-copy > .tag, .feat-copy > h3, .feat-copy > p { grid-column: 1; }
+  .feat-copy > .points { grid-column: 2; grid-row: 2 / span 2; align-self: end; margin-bottom: 16px; }
+  .more { grid-template-columns: minmax(0, 1fr); gap: 56px; }
+  .more > .mini:not(.mini-phone) { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .more > .mini:not(.mini-phone) h4 { margin-top: 20px; }
+}
