@@ -124,6 +124,37 @@
 
   // ---------------------------------------------------------------- clips
   const clips = [...document.querySelectorAll('.clip video')];
+
+  // Each clip comes in a few widths, scaled down ahead of time so text stays crisp: the browser
+  // shrinks video crudely, and a 2560-wide clip drawn 750 pixels wide on a non-Retina screen blurs.
+  // The width picked is the smallest at least as wide as the clip is drawn, in device pixels.
+  const SIZES = { phone: [390, 780] };
+  const nameOf = (v) => (v.getAttribute('poster') || '').replace(/^media\//, '').replace(/\.png$/, '');
+  const sizesOf = (name) => SIZES[name] ?? [1280, 1920, 2560];
+  const full = (name) => sizesOf(name).at(-1);
+  const sourcesFor = (name, w) => {
+    const file = w === full(name) ? name : `${name}-${w}`;
+    return `<source src="media/${file}.webm" type="video/webm"><source src="media/${file}.mp4" type="video/mp4">`;
+  };
+  const pick = (v) => {
+    const name = nameOf(v);
+    if (!name) return;
+    const need = v.getBoundingClientRect().width * (window.devicePixelRatio || 1);
+    const w = sizesOf(name).find((s) => s >= need * 0.95) ?? full(name);
+    if (v.dataset.w === String(w)) return;
+    const playing = !v.paused;
+    v.dataset.w = String(w);
+    v.innerHTML = sourcesFor(name, w);
+    v.load();
+    if (playing) v.play().catch(() => {});
+  };
+  for (const v of clips) pick(v);
+  let again = 0;
+  const repick = () => { clearTimeout(again); again = setTimeout(() => clips.forEach(pick), 200); };
+  addEventListener('resize', repick);
+  // Moved to a screen of another density: the same layout needs another width.
+  const watchDensity = () => matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`).addEventListener('change', () => { repick(); watchDensity(); }, { once: true });
+  watchDensity();
   const manual = new Set();
   const stopAll = () => {
     for (const v of clips) {
@@ -158,7 +189,8 @@
   const title = document.getElementById('lb-title');
   function open(v) {
     if (!box?.showModal) return;
-    big.innerHTML = v.innerHTML;
+    // Enlarged, it gets the full width, whatever the page shows.
+    big.innerHTML = nameOf(v) ? sourcesFor(nameOf(v), full(nameOf(v))) : v.innerHTML;
     big.poster = v.poster;
     big.setAttribute('aria-label', v.getAttribute('aria-label') ?? '');
     title.textContent = v.closest('.clip').querySelector('.chrome-t')?.textContent ?? '';
