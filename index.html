@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agix Mission Control</title>
+<meta name="description" content="Agix runs crews of coding agents on Claude Code, Codex and Pi, on your machine. A PM plans, builders and testers work in their own git worktrees, and you merge.">
+<meta name="color-scheme" content="dark light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23c8f169'/%3E%3Cg fill='%230a0c0f'%3E%3Ccircle cx='11' cy='16' r='3.4'/%3E%3Ccircle cx='21.5' cy='9.5' r='3.4'/%3E%3Ccircle cx='21.5' cy='22.5' r='3.4'/%3E%3C/g%3E%3Cpath d='M11 16 21.5 9.5M11 16l10.5 6.5' stroke='%230a0c0f' stroke-width='2'/%3E%3C/svg%3E">
+</head>
+<body>
+<span id="top" class="page-top" aria-hidden="true"></span>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#top" aria-label="Agix, back to top">
+      <span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8"/><g><circle cx="11" cy="16" r="3.4"/><circle cx="21.5" cy="9.5" r="3.4"/><circle cx="21.5" cy="22.5" r="3.4"/></g><path d="M11 16 21.5 9.5M11 16l10.5 6.5"/></svg></span>
+      <span>Agix</span>
+    </a>
+    <nav aria-label="Sections">
+      <a href="#flow">How a run flows</a>
+      <a href="#features">Features</a>
+      <a href="#safety">Safety</a>
+      <a class="btn btn-sm" href="#start">Coming soon</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- Hero -->
+<section class="hero">
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> Local. Multi-agent. Multi-runtime.</p>
+      <h1>Your coding agents,<br><span class="hl">working as a crew.</span></h1>
+      <p class="lede">Agix runs crews of coding agents on Claude Code, Codex and Pi, and lets any of them message any other over one bus. A PM plans, builders and testers work in git worktrees of their own, hand finished work to each other, and you merge. <b>Mission control</b> shows all of it, live.</p>
+      <div class="cta-row">
+        <a class="btn btn-p" href="#start">Open source, soon</a>
+        <a class="btn" href="#features">See it work</a>
+      </div>
+      <p class="hero-note mono">runs on <span>127.0.0.1</span> · your sign-ins · your worktrees</p>
+    </div>
+
+    <figure class="bus" aria-labelledby="bus-cap">
+      <svg id="bus-svg" viewBox="0 0 560 460" role="img" aria-labelledby="bus-title bus-desc">
+        <title id="bus-title">The Agix bus</title>
+        <desc id="bus-desc">Six participants around a central bus: you, the project manager, two builders, a tester and a reviewer. Messages travel through the bus from one to another.</desc>
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="var(--acc)" stop-opacity=".28"/><stop offset="1" stop-color="var(--acc)" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="280" cy="230" r="190" class="orbit"/>
+        <circle cx="280" cy="230" r="120" class="orbit orbit-2"/>
+        <circle cx="280" cy="230" r="110" fill="url(#glow)"/>
+        <g id="bus-links"></g>
+        <g id="bus-packets"></g>
+        <g class="core">
+          <rect x="222" y="198" width="116" height="64" rx="16"/>
+          <text x="280" y="226" class="core-t">agix bus</text>
+          <text x="280" y="246" class="core-s" id="bus-count">0 messages</text>
+        </g>
+        <g id="bus-nodes"></g>
+      </svg>
+      <figcaption id="bus-cap">
+        <ol class="feed" id="bus-feed" aria-live="off"></ol>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- Runtimes -->
+<section class="runtimes" aria-labelledby="rt-title">
+  <div class="wrap rt-in">
+    <h2 id="rt-title" class="rt-label">Runs on the agents you already use</h2>
+    <ul class="rt-list">
+      <li><span class="rt-dot" style="--c: var(--rt-claude)"></span><b>Claude Code</b><span class="mono dim">opus · sonnet · haiku</span></li>
+      <li><span class="rt-dot" style="--c: var(--rt-codex)"></span><b>Codex</b><span class="mono dim">your ChatGPT plan's models</span></li>
+      <li><span class="rt-dot" style="--c: var(--rt-pi)"></span><b>Pi</b><span class="mono dim">API keys or local Ollama</span></li>
+    </ul>
+    <p class="rt-foot">One crew can mix them. Each runtime signs in the way you already use it; Agix never asks for or stores your credentials.</p>
+  </div>
+</section>
+
+<!-- Flow -->
+<section class="flow" id="flow" aria-labelledby="flow-title">
+  <div class="wrap">
+    <p class="kicker mono">01 / how a run flows</p>
+    <h2 id="flow-title">Describe it. Approve the plan. Merge the work.</h2>
+    <ol class="steps">
+      <li class="step" style="--k: var(--k-task)">
+        <span class="step-n mono">PLAN</span>
+        <h3>A PM reads the code and plans</h3>
+        <p>Goal, tasks in order, the files each touches, what counts as done and the edge cases. Agix checks the plan and lists what to look at, with one-click fixes.</p>
+        <p class="step-you mono">you: approve, or request changes</p>
+      </li>
+      <li class="step" style="--k: var(--k-handoff)">
+        <span class="step-n mono">BUILD</span>
+        <h3>The crew works in worktrees</h3>
+        <p>Builders and testers each get a git worktree. Finished work is handed to whoever builds on it. Questions for you show up with an answer box.</p>
+        <p class="step-you mono">you: answer, steer, stop a turn</p>
+      </li>
+      <li class="step" style="--k: var(--acc)">
+        <span class="step-n mono">MERGE</span>
+        <h3>You merge, in the right order</h3>
+        <p>Each worktree's diff with the tasks it covers and what testers said. Try them all together first; a merge that would conflict is refused and changes nothing.</p>
+        <p class="step-you mono">you: merge all, or one by one</p>
+      </li>
+      <li class="step" style="--k: var(--k-review)">
+        <span class="step-n mono">PR</span>
+        <h3>Or open a PR the crew keeps fixing</h3>
+        <p>Agix pushes a branch and opens the PR. Failing checks and review comments are picked up and addressed by a PR fixer, round by round.</p>
+        <p class="step-you mono">you: review it on GitHub</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features" id="features" aria-labelledby="feat-title">
+  <div class="wrap">
+    <p class="kicker mono">02 / mission control</p>
+    <h2 id="feat-title">Everything the crew does, where you can see it</h2>
+    <p class="sub">Every clip below is the real Mission control, recorded against a local daemon with demo data: a storefront team adding CSV export to its orders page.</p>
+  </div>
+
+  <article class="feat" id="f-start">
+    <div class="wrap feat-in">
+      <div class="feat-copy">
+        <p class="tag mono">Start</p>
+        <h3>Three ways to start: chat, plan, or build a feature</h3>
+        <p>Say what you want, pick the project, the runtime and its model. A <b>chat</b> is one agent you talk to. A <b>plan</b> scopes something new without starting a crew. <b>Build a feature</b> hands it to a PM, which reads the code (it cannot change it) and submits a plan.</p>
+        <ul class="points">
+          <li>Projects found on your machine, searched from the keyboard</li>
+          <li>Read only, Edit files, or Edit + run commands</li>
+          <li>Pick a saved crew, or let the PM choose one</li>
+        </ul>
+      </div>
+      <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">New run · storefront</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/start.png" aria-label="Typing a request on Home, choosing Build a feature and the storefront project, then sending it: the PM reads the code and its plan appears.">
+            <source src="media/start.webm" type="video/webm">
+            <source src="media/start.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="New run · storefront" aria-label="Enlarge clip: New run · storefront"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">Typing a request on Home, choosing Build a feature and the storefront project, then sending it: the PM reads the code and its plan appears.</figcaption>
+        </figure>
+    </div>
+  </article>
+
+  <article class="feat flip" id="f-plan">
+    <div class="wrap feat-in">
+      <div class="feat-copy">
+        <p class="tag mono">Plan review</p>
+        <h3>A plan you can check before anything changes</h3>
+        <p>Tasks in order with their files and estimates, acceptance criteria with the test that proves each, edge cases with their decisions. Agix lists what to look at: two tasks writing the same file at once, a criterion nothing tests. One click fixes it and makes a new version.</p>
+        <ul class="points">
+          <li>Task graph with the critical path, and a timeline per agent</li>
+          <li>Rest on a task to see what it covers and touches</li>
+          <li><b>Approve and start crew</b>, or send your notes back</li>
+        </ul>
+      </div>
+      <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">CSV export for orders · Plan</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/plan.png" aria-label="Fixing a flagged conflict in the PM's plan with one click, opening the task graph and timeline, resting on tasks to see what they cover, then approving: the crew starts.">
+            <source src="media/plan.webm" type="video/webm">
+            <source src="media/plan.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="CSV export for orders · Plan" aria-label="Enlarge clip: CSV export for orders · Plan"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">Fixing a flagged conflict in the PM's plan with one click, opening the task graph and timeline, resting on tasks to see what they cover, then approving: the crew starts.</figcaption>
+        </figure>
+    </div>
+  </article>
+
+  <article class="feat" id="f-crew">
+    <div class="wrap feat-in">
+      <div class="feat-copy">
+        <p class="tag mono">Build</p>
+        <h3>The crew live, in words</h3>
+        <p>Each agent says what it is doing right now: editing a file, running the tests, waiting on a teammate. Messages between agents show in one feed, hand-overs included. When one asks you something, the answer box is right under the question, and your answer goes back to whoever asked.</p>
+        <ul class="points">
+          <li>Task progress for the run and for each agent</li>
+          <li>Write to the PM, or to anyone with <code>@name</code></li>
+          <li>Cost and context use on every agent's card</li>
+        </ul>
+      </div>
+      <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">CSV export for orders · Build</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/crew.png" aria-label="The Build view: each agent says what it is doing, tasks get done, a question from the frontend engineer is answered in the feed, and a hand-over arrives.">
+            <source src="media/crew.webm" type="video/webm">
+            <source src="media/crew.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="CSV export for orders · Build" aria-label="Enlarge clip: CSV export for orders · Build"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">The Build view: each agent says what it is doing, tasks get done, a question from the frontend engineer is answered in the feed, and a hand-over arrives.</figcaption>
+        </figure>
+    </div>
+  </article>
+
+  <article class="feat flip" id="f-views">
+    <div class="wrap feat-in">
+      <div class="feat-copy">
+        <p class="tag mono">Views</p>
+        <h3>List, lanes, board, graph</h3>
+        <p><b>Lanes</b> lay the run out over time, a lane per agent and every message an arrow, with why anything is waiting. The <b>board</b> moves tasks across as the crew reports them, blocked ones with the reason. The <b>graph</b> shows who talks to whom, and takes new personas by drag and drop.</p>
+        <ul class="points">
+          <li>Arrow keys walk through messages</li>
+          <li>Ask the PM for another task from the board</li>
+          <li>The view you left is the view you come back to</li>
+        </ul>
+      </div>
+      <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">CSV export for orders · Lanes, Board, Graph</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/views.png" aria-label="Switching the same run between Lanes, with messages as arrows over time, the task Board, and the crew Graph.">
+            <source src="media/views.webm" type="video/webm">
+            <source src="media/views.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="CSV export for orders · Lanes, Board, Graph" aria-label="Enlarge clip: CSV export for orders · Lanes, Board, Graph"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">Switching the same run between Lanes, with messages as arrows over time, the task Board, and the crew Graph.</figcaption>
+        </figure>
+    </div>
+  </article>
+
+  <article class="feat" id="f-agent">
+    <div class="wrap feat-in">
+      <div class="feat-copy">
+        <p class="tag mono">Up close</p>
+        <h3>One agent, up close</h3>
+        <p>Its tasks as a checklist, what it spent, how full its context is, and the worktree it works in: branch, folder, and a button to open it in your editor. The live view is one timeline: what it said, the steps it took, the messages that reached it. Write to it from there; it reads it after its current step.</p>
+        <ul class="points">
+          <li>Stop a turn, resume it, or move the agent to another runtime</li>
+          <li>Context bar turns amber at 70%, red at 85%; compact in one click</li>
+        </ul>
+      </div>
+      <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">Backend engineer · atlas</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/agent.png" aria-label="Opening the backend engineer's panel with its task checklist, spend, context and worktree, then its live timeline, and writing to it.">
+            <source src="media/agent.webm" type="video/webm">
+            <source src="media/agent.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="Backend engineer · atlas" aria-label="Enlarge clip: Backend engineer · atlas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">Opening the backend engineer's panel with its task checklist, spend, context and worktree, then its live timeline, and writing to it.</figcaption>
+        </figure>
+    </div>
+  </article>
+
+  <article class="feat flip" id="f-review">
+    <div class="wrap feat-in">
+      <div class="feat-copy">
+        <p class="tag mono">Changes</p>
+        <h3>Comment on a line; the agent that wrote it answers</h3>
+        <p>The Changes view lists every file the crew is changing, live, with who changes it and its diff. A file two agents both change is flagged, since that is where their merges would clash. Comments on lines are drafts until you send them; the agent gets each with its file, line and code, and its answer shows under the line.</p>
+        <ul class="points">
+          <li>Drafts survive a reload</li>
+          <li>The same comments at the merge stage</li>
+        </ul>
+      </div>
+      <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">CSV export for orders · Changes</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/review.png" aria-label="In the Changes view, commenting on a line of a diff and sending it to the agent that wrote it; its answer appears under the line.">
+            <source src="media/review.webm" type="video/webm">
+            <source src="media/review.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="CSV export for orders · Changes" aria-label="Enlarge clip: CSV export for orders · Changes"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">In the Changes view, commenting on a line of a diff and sending it to the agent that wrote it; its answer appears under the line.</figcaption>
+        </figure>
+    </div>
+  </article>
+
+  <article class="feat" id="f-merge">
+    <div class="wrap feat-in">
+      <div class="feat-copy">
+        <p class="tag mono">Merge</p>
+        <h3>Merge in the right order, after trying it all together</h3>
+        <p>Each worktree's changes in the order to merge them, work others build on first, and why. The tasks each covers and the last word from testers and reviewers sit above the diffs. <b>Try them all together</b> merges into a scratch copy and says whether they combine. <b>Merge all, in order</b> stops at the first refused merge and says what it did.</p>
+        <ul class="points">
+          <li>Worktrees holding the same work are said once</li>
+          <li>Your checkout is untouched until you merge</li>
+        </ul>
+      </div>
+      <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">CSV export for orders · Merge</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/merge.png" aria-label="The merge stage: crew quotes, merge order hints, Try them all together reports they combine cleanly, then Merge all, in order merges every worktree.">
+            <source src="media/merge.webm" type="video/webm">
+            <source src="media/merge.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="CSV export for orders · Merge" aria-label="Enlarge clip: CSV export for orders · Merge"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">The merge stage: crew quotes, merge order hints, Try them all together reports they combine cleanly, then Merge all, in order merges every worktree.</figcaption>
+        </figure>
+    </div>
+  </article>
+
+  <article class="feat flip" id="f-pr">
+    <div class="wrap feat-in">
+      <div class="feat-copy">
+        <p class="tag mono">Pull requests</p>
+        <h3>A PR the crew keeps fixing</h3>
+        <p>Instead of merging here, open a PR: the worktrees go on a new branch, pushed, with a PR into main. When a check fails or a reviewer comments on a line, a PR fixer addresses it in a round: fixes the code, pushes, replies to the comment. Up to three rounds before it asks you; pause it any time.</p>
+        <ul class="points">
+          <li>A PRs page across all your runs</li>
+          <li>Uses the <code>gh</code> you are signed in to</li>
+        </ul>
+      </div>
+      <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">CSV export for orders · PR #42</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/pr.png" aria-label="Opening a PR from the merge stage; a failing check and a review comment are fixed in round 1, pushed and replied to; checks pass; the PRs page lists it.">
+            <source src="media/pr.webm" type="video/webm">
+            <source src="media/pr.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="CSV export for orders · PR #42" aria-label="Enlarge clip: CSV export for orders · PR #42"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">Opening a PR from the merge stage; a failing check and a review comment are fixed in round 1, pushed and replied to; checks pass; the PRs page lists it.</figcaption>
+        </figure>
+    </div>
+  </article>
+
+  <article class="feat" id="f-recovery">
+    <div class="wrap feat-in">
+      <div class="feat-copy">
+        <p class="tag mono">When things go wrong</p>
+        <h3>Out of tokens, going in circles, gone quiet</h3>
+        <p>An agent that hits its usage limit is paused with its work saved, and can carry on on another runtime, keeping its conversation. Two agents messaging each other back and forth without settling it are paused and shown, so you or the PM decide. A crashed agent restarts with its session; a quiet one can be nudged.</p>
+        <ul class="points">
+          <li>Fallback runtimes per persona, used on their own</li>
+          <li>Stop one agent's turn; its messages wait until you resume it</li>
+        </ul>
+      </div>
+      <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">CSV export for orders · Build</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/recovery.png" aria-label="An agent runs out of tokens and is moved to Codex from its banner; then two agents going in circles are paused and handed to the PM.">
+            <source src="media/recovery.webm" type="video/webm">
+            <source src="media/recovery.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="CSV export for orders · Build" aria-label="Enlarge clip: CSV export for orders · Build"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">An agent runs out of tokens and is moved to Codex from its banner; then two agents going in circles are paused and handed to the PM.</figcaption>
+        </figure>
+    </div>
+  </article>
+
+  <article class="feat flip" id="f-inbox">
+    <div class="wrap feat-in">
+      <div class="feat-copy">
+        <p class="tag mono">Needs you · ⌘J</p>
+        <h3>One inbox for everything waiting on you</h3>
+        <p>Plans to approve, questions, merges waiting, agents in trouble, budgets and context running out, across every run. Work through it from the keyboard: <kbd>J</kbd> <kbd>K</kbd> to move, <kbd>R</kbd> to answer in place, <kbd>A</kbd> to approve a plan, <kbd>Enter</kbd> to open it where it is dealt with.</p>
+        <ul class="points">
+          <li>Browser notifications for what starts waiting while you are elsewhere</li>
+          <li>Each item with its one-click fix</li>
+        </ul>
+      </div>
+      <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">Needs you</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/inbox.png" aria-label="The Needs you inbox opened with Command J: moving with J and K, answering a question in place with R, approving a plan with A.">
+            <source src="media/inbox.webm" type="video/webm">
+            <source src="media/inbox.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="Needs you" aria-label="Enlarge clip: Needs you"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">The Needs you inbox opened with Command J: moving with J and K, answering a question in place with R, approving a plan with A.</figcaption>
+        </figure>
+    </div>
+  </article>
+
+  <div class="wrap">
+    <h3 class="more-title">And the rest of the day</h3>
+    <div class="more">
+      <article class="mini" id="f-home">
+        <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">Home</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/home.png" aria-label="Home after nine hours away lists what changed in each run; then Command K search for &quot;export&quot; finds runs, agents and messages.">
+            <source src="media/home.webm" type="video/webm">
+            <source src="media/home.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="Home" aria-label="Enlarge clip: Home"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">Home after nine hours away lists what changed in each run; then Command K search for "export" finds runs, agents and messages.</figcaption>
+        </figure>
+        <h4>While you were away · ⌘K</h4>
+        <p>Back after a night, Home says what changed in each run, what waits on you first. ⌘K searches runs, agents and messages.</p>
+      </article>
+      <article class="mini" id="f-spend">
+        <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">Budget and usage</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/spend.png" aria-label="The run's budget and each agent's cost, then the usage-limits panel with Claude Code's 5-hour and weekly windows, Codex's, and Pi's note, then the budget editor.">
+            <source src="media/spend.webm" type="video/webm">
+            <source src="media/spend.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="Budget and usage" aria-label="Enlarge clip: Budget and usage"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">The run's budget and each agent's cost, then the usage-limits panel with Claude Code's 5-hour and weekly windows, Codex's, and Pi's note, then the budget editor.</figcaption>
+        </figure>
+        <h4>Budgets, cost and limits</h4>
+        <p>Spend and tokens per run and per agent, a budget that turns amber near it, and the <b>$</b> panel: how much of each subscription's 5-hour and weekly windows is used.</p>
+      </article>
+      <article class="mini" id="f-personas">
+        <figure class="clip">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">Personas</span></div>
+          <video width="1280" height="800" autoplay muted loop playsinline preload="metadata" poster="media/personas.png" aria-label="Creating a Security reviewer persona: Write with AI drafts its instructions, Use this puts them in, then a fallback to Pi with a local model is added.">
+            <source src="media/personas.webm" type="video/webm">
+            <source src="media/personas.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="Personas" aria-label="Enlarge clip: Personas"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">Creating a Security reviewer persona: Write with AI drafts its instructions, Use this puts them in, then a fallback to Pi with a local model is added.</figcaption>
+        </figure>
+        <h4>Personas and crews</h4>
+        <p>Roles agents play, with who plays them: runtime, model, fallbacks, a second opinion. Write with AI drafts the instructions. Save crews, or import a repo's <code>.claude/agents</code>.</p>
+      </article>
+      <article class="mini mini-phone" id="f-phone">
+        <figure class="clip clip-phone">
+          <div class="chrome" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="chrome-t mono">Phone</span></div>
+          <video width="390" height="844" autoplay muted loop playsinline preload="metadata" poster="media/phone.png" aria-label="Mission control on a phone: answering a question, approving a plan and switching an agent that ran out of tokens to Pi, each on its card.">
+            <source src="media/phone.webm" type="video/webm">
+            <source src="media/phone.mp4" type="video/mp4">
+          </video>
+          <button type="button" class="expand" data-title="Phone" aria-label="Enlarge clip: Phone"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg></button>
+          <figcaption class="sr">Mission control on a phone: answering a question, approving a plan and switching an agent that ran out of tokens to Pi, each on its card.</figcaption>
+        </figure>
+        <div>
+          <h4>On your phone</h4>
+          <p>Approve plans, answer questions and move a stuck agent from your phone. The daemon listens on this machine only; turn on phone access and it also listens on your Tailscale address, never the open network.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Bridge -->
+<section class="bridge" aria-labelledby="bridge-title">
+  <div class="wrap">
+    <p class="kicker mono">03 / new in the bridge</p>
+    <h2 id="bridge-title">Agents that can check their own work</h2>
+    <p class="sub">The bridge is what every agent gets from Agix: messages, tasks, hand-overs. It now does more of the work a developer does to call something finished.</p>
+    <div class="bridge-grid">
+      <div class="b-card">
+        <span class="b-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6"/><circle cx="9" cy="6.5" r=".6"/></svg></span>
+        <h3>A browser of its own</h3>
+        <p>Each agent gets its own browser to look at what it built. Local pages only: it cannot browse the web with it.</p>
+      </div>
+      <div class="b-card">
+        <span class="b-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v6H5zM5 14h14v6H5z"/><path d="M8 7h.01M8 17h.01M12 7h4M12 17h4"/></svg></span>
+        <h3>Dev servers on their own ports</h3>
+        <p>Two builders can each run the app from their worktree at the same time, without fighting over port 3000.</p>
+      </div>
+      <div class="b-card">
+        <span class="b-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 8.2-8.2M16 7l2.5 2.5M14 9l2 2"/></svg></span>
+        <h3>Test logins, handled by Agix</h3>
+        <p>When a page needs signing in, Agix does it with the project's test account. Agents never see the password.</p>
+      </div>
+      <div class="b-card b-card-acc">
+        <span class="b-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span>
+        <h3>Done means proven</h3>
+        <p>A task counts as done only once Agix has run its happy and unhappy checks, with screenshots, not when an agent says so.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Safety -->
+<section class="safety" id="safety" aria-labelledby="safety-title">
+  <div class="wrap">
+    <p class="kicker mono">04 / safety</p>
+    <h2 id="safety-title">Built to be left running</h2>
+    <dl class="safe-grid">
+      <div><dt>Local only</dt><dd>The daemon listens on 127.0.0.1, and every call needs its token. Phone access adds your Tailscale address and nothing else.</dd></div>
+      <div><dt>Worktrees, not your checkout</dt><dd>Builders and testers each work in a git worktree of their own. Your checkout stays as it is until you merge.</dd></div>
+      <div><dt>Never merges for you</dt><dd>Merging is your click. A merge that would conflict is refused and changes nothing. A PR goes to GitHub for review.</dd></div>
+      <div><dt>Your sign-ins stay yours</dt><dd>Each runtime uses its own sign-in. Agix never asks for or stores credentials, and agents never see test passwords.</dd></div>
+      <div><dt>Limits you set</dt><dd>What agents may do (read, edit, run commands), a budget per run, and a loop guard that pauses agents going in circles.</dd></div>
+      <div><dt>Only the bridge</dt><dd>Agents get the Agix bridge, not your other MCP servers. The PM and reviewers only read.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- Get started -->
+<section class="start" id="start" aria-labelledby="start-title">
+  <div class="wrap start-in">
+    <div>
+      <p class="kicker mono">05 / open source, soon</p>
+      <h2 id="start-title">Open source, soon.</h2>
+      <p class="sub">Agix is being finished before its code goes public, under the Apache-2.0 license. It runs on your machine with Node 24 or later and the runtimes you already use, signed in your usual way, and keeps its database, logs and worktrees in <code>~/.agix</code>. Starting it will look like this:</p>
+    </div>
+    <div class="term" role="group" aria-label="How starting Agix will look">
+      <div class="term-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="mono dim">zsh</span></div>
+<pre class="mono" id="term-code"><span class="c"># from the repository</span>
+<span class="p">$</span> npm install
+<span class="p">$</span> npm run build:web
+<span class="p">$</span> npm run daemon -- --open
+<span class="o">Mission control on http://127.0.0.1:&lt;port&gt;/#token=…</span>
+
+<span class="c"># later, from anywhere</span>
+<span class="p">$</span> agix ui</pre>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span class="brand brand-sm"><span class="logo" aria-hidden="true"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8"/><g><circle cx="11" cy="16" r="3.4"/><circle cx="21.5" cy="9.5" r="3.4"/><circle cx="21.5" cy="22.5" r="3.4"/></g><path d="M11 16 21.5 9.5M11 16l10.5 6.5"/></svg></span>Agix</span>
+    <span class="dim">Clips recorded from Mission control with demo data. Nothing here came from a real project.</span>
+    <a href="#top">Back to top</a>
+  </div>
+</footer>
+
+<dialog class="lightbox" id="lightbox" aria-label="Clip, enlarged">
+  <div class="lb-bar"><span id="lb-title" class="mono"></span><button type="button" class="btn btn-sm" id="lb-close">Close</button></div>
+  <video id="lb-video" muted loop playsinline></video>
+</dialog>
+
+<script src="app.js" defer></script>
+</body>
+</html>
