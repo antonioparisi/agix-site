@@ -1,4 +1,4 @@
-/* Agix site. Tokens follow Mission control's own (web/src/styles.css): dark first, lime accent. */
+/* Agix site. Tokens follow Mission control's own (web/src/styles.css): dark first, hot-pink accent (brand #FF3D8B). */
 :root {
   --bg: #0a0c0f;
   --s1: #0d1014;
@@ -11,9 +11,9 @@
   --fg2: #c9cfd6;
   --mu: #98a1ae;
   --dim: #7a8390;
-  --acc: #c8f169;
+  --acc: #ff3d8b;
   --acc-ink: #0a0c0f;
-  --acc-soft: rgba(200, 241, 105, 0.12);
+  --acc-soft: rgba(255, 61, 139, 0.14);
   --ok: #4ade80;
   --warn: #ffb547;
   --bad: #ff7a90;
@@ -46,9 +46,9 @@
     --fg2: #2a2f37;
     --mu: #545c68;
     --dim: #5f6773;
-    --acc: #4f7a00;
+    --acc: #b8155a;
     --acc-ink: #ffffff;
-    --acc-soft: rgba(79, 122, 0, 0.1);
+    --acc-soft: rgba(184, 21, 90, 0.1);
     --k-task: #1f6fc7;
     --k-question: #a85f00;
     --k-handoff: #0b8475;
@@ -58,7 +58,7 @@
     --rt-codex: #3e5bd1;
     --rt-pi: #0b8475;
     --grid: rgba(0, 0, 0, 0.045);
-    --shadow: 0 24px 60px rgba(30, 40, 20, 0.16), 0 0 0 1px var(--bd2);
+    --shadow: 0 24px 60px rgba(20, 22, 30, 0.16), 0 0 0 1px var(--bd2);
     color-scheme: light;
   }
 }
@@ -75,9 +75,9 @@
     --fg2: #2a2f37;
     --mu: #545c68;
     --dim: #5f6773;
-    --acc: #4f7a00;
+    --acc: #b8155a;
     --acc-ink: #ffffff;
-    --acc-soft: rgba(79, 122, 0, 0.1);
+    --acc-soft: rgba(184, 21, 90, 0.1);
     --k-task: #1f6fc7;
     --k-question: #a85f00;
     --k-handoff: #0b8475;
@@ -87,7 +87,7 @@
     --rt-codex: #3e5bd1;
     --rt-pi: #0b8475;
     --grid: rgba(0, 0, 0, 0.045);
-    --shadow: 0 24px 60px rgba(30, 40, 20, 0.16), 0 0 0 1px var(--bd2);
+    --shadow: 0 24px 60px rgba(20, 22, 30, 0.16), 0 0 0 1px var(--bd2);
     color-scheme: light;
   }
 
@@ -131,9 +131,8 @@ kbd { font-size: 0.8em; padding: 0.1em 0.45em; border-radius: 5px; border: 1px s
 .top-in { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 650; font-size: 18px; text-decoration: none; letter-spacing: -0.01em; }
 .logo svg { width: 28px; height: 28px; }
-.logo rect { fill: var(--acc); }
-.logo circle { fill: var(--acc-ink); }
-.logo path { stroke: var(--acc-ink); stroke-width: 2; fill: none; }
+.logo rect { fill: #ff3d8b; }
+.logo circle, .logo path { fill: none; stroke: #ffffff; stroke-width: 2.6; stroke-linecap: round; }
 .top nav { display: flex; align-items: center; gap: 22px; font-size: 14.5px; }
 .top nav a:not(.btn) { color: var(--mu); text-decoration: none; }
 .top nav a:not(.btn):hover { color: var(--fg); }
@@ -275,11 +274,11 @@ section h2 { text-wrap: balance; margin: 0 0 14px; font-size: clamp(30px, 4.2vw,
   position: absolute; right: 10px; top: 4px; width: 26px; height: 26px; display: grid; place-items: center;
   border: 1px solid #2e3541; border-radius: 7px; background: #101318; color: #c9cfd6; cursor: pointer; opacity: .8;
 }
-.expand:hover { opacity: 1; border-color: #c8f169; color: #c8f169; }
+.expand:hover { opacity: 1; border-color: #ff3d8b; color: #ff3d8b; }
 .expand svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.6; }
 .clip.paused::after {
   content: '▶  Play'; position: absolute; left: 50%; top: calc(50% + 17px); transform: translate(-50%, -50%);
-  padding: 10px 16px; border-radius: 999px; background: rgba(10, 12, 15, .82); border: 1px solid #c8f169; color: #c8f169; font: 600 14px var(--mono); pointer-events: none;
+  padding: 10px 16px; border-radius: 999px; background: rgba(10, 12, 15, .82); border: 1px solid #ff3d8b; color: #ff3d8b; font: 600 14px var(--mono); pointer-events: none;
 }
 
 /* The rest of the day */
@@ -328,7 +327,7 @@ section h2 { text-wrap: balance; margin: 0 0 14px; font-size: clamp(30px, 4.2vw,
 .term-bar .copy { margin-left: auto; background: #101318; border-color: #2e3541; color: #e7eaee; }
 .term pre { margin: 0; padding: 20px 22px; font-size: 14.5px; line-height: 1.75; overflow-x: auto; }
 .term .c { color: #7a8390; }
-.term .p { color: #c8f169; user-select: none; }
+.term .p { color: #ff3d8b; user-select: none; }
 .term .o { color: #3fd6c1; }
 
 /* Footer */
