@@ -255,6 +255,8 @@ section h2 { text-wrap: balance; margin: 0 0 14px; font-size: clamp(30px, 4.2vw,
 .tag { display: inline-block; margin: 0 0 12px; padding: 4px 9px; border-radius: 6px; background: var(--acc-soft); color: var(--acc); font-size: 12.5px; }
 .feat h3 { margin: 0 0 14px; font-size: clamp(23px, 2.5vw, 30px); line-height: 1.15; letter-spacing: -0.02em; }
 .feat-copy > p { margin: 0 0 16px; color: var(--fg2); max-width: 62ch; }
+/* The label above a feature stays a small tag in the accent colour, not a paragraph or a full-width grid row. */
+.feat-copy > .tag { justify-self: start; width: fit-content; color: var(--acc); }
 .feat h3, .step h3, .b-card h3 { text-wrap: balance; }
 .points { max-width: 62ch; }
 .feat-copy b { color: var(--fg); font-weight: 600; }
